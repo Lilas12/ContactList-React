@@ -1,20 +1,24 @@
 import "./App.css";
-import UserCard from "./components/userCard/userCard";
-import users from "./content/users.json";
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/home";
+import Contact from "./pages/contact";
+import About from "./pages/about";
+import { MainContext } from "./utils/context";
+import { useState } from "react";
 
 function App() {
-  return users.map((user) => {
-    return (
-      <UserCard
-        name={user.name}
-        email={user.email}
-        address={user.address}
-        longitude={user.longitude}
-        latitude={user.latitude}
-        phone={user.phone}
-      />
-    );
-  });
+  const [lastCalledUser, setLastCalledUser] = useState(undefined);
+
+  const storeLastCalledUser = (user) => setLastCalledUser(user);
+  return (
+    <MainContext.Provider value={{ lastCalledUser, storeLastCalledUser }}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </MainContext.Provider>
+  );
 }
 
 export default App;
